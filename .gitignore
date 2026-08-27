@@ -1,0 +1,11 @@
+# dependencias
+node_modules
+
+# ignore .env
+.env
+
+# ignore database files
+*.sql
+
+# documentation
+docs
