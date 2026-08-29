@@ -20,18 +20,13 @@ const ComprasService = {
         await ProdutoService.getById(compra.produto_id)
         await FornecedorService.getById(compra.fornecedor_id);
 
-        const status = await statusService.getByCodigo("PEN");
+        const valorTotal = (compra.quantidade * compra.valor_unidade);
 
-        if (!status) {
-            throw new AppError({
-                message: "Status Pendente não encontrado",
-                reason: "STATUS_PENDENTE_NOT_FOUND",
-                statusCode: 500,
-            });
-        }
+        const status = await statusService.getByCodigo("PEN");
 
         const dadosCompra = {
             ...compra,
+            valor_total: valorTotal,
             usuario_id: usuario.sub,
             empresa_id: usuario.empresa,
             status_compra_id: status.id,
@@ -128,8 +123,11 @@ const ComprasService = {
             });
         }
 
+        const valorTotal = (compra.quantidade * compra.valor_unidade);
+
         const result = await ComprasRepository.update(id, {
             ...compra, 
+            valor_total: valorTotal,
             usuario_id: usuario.sub, 
             empresa_id: usuario.empresa
         });

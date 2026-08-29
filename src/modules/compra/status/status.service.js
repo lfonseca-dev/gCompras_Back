@@ -29,6 +29,21 @@ const StatusService = {
                 statusCode: 404
             });
         }
+        
+        return status;
+    },
+
+    async getByCodigo(codigo) {
+        const status = await StatusRepository.getByCodigo(codigo);
+
+        if (!status) {
+            throw new AppError({
+                message: "Status não encontrado",
+                reason: "STATUS_NOT_FOUND",
+                statusCode: 404
+            });
+        }
+
         return status;
     },
 

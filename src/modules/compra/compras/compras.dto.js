@@ -5,19 +5,23 @@ export const createCompraDTO = z.object({
         .string({required_error: "Número é obrigatório"})
         .min(1, "Número não pode ser vazio"),
 
+    quantidade: z
+        .number({required_error: "Quantidade é obrigatório"})
+        .positive(),
+
     produto_id: z
         .number({required_error: "ID do produto é obrigatório"})
         .int("ID do produto deve ser um número inteiro")
         .positive("ID do produto deve ser maior que zero"),
 
+    valor_unidade: z
+        .number({required_error: "Valor é obrigatório"})
+        .positive("Valor deve ser maior que zero"),
+
     data: z
         .string({required_error: "Data é obrigatória"})
         .min(1, "Data não pode ser vazia")
         .regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
-
-    valor: z
-        .number({required_error: "Valor é obrigatório"})
-        .positive("Valor deve ser maior que zero"),
 
     observacao: z
         .string()

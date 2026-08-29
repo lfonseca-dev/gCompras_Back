@@ -4,7 +4,6 @@ import { asyncHandler } from "../../../core/utils/asyncHandler.js";
 
 const ComprasController = {
     create: asyncHandler(async (req, res) => {
-        console.log("req.user", req.user);
         const data = await ComprasService.create(req.body, req.user);
         return response.created(res, {
             message: "Compra cadastrada com sucesso",
