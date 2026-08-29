@@ -3,9 +3,10 @@ import HistoricoRepository from "../historico/historico.repository.js";
 import FornecedorService from "../../cadastro/fornecedor/fornecedor.service.js";
 import statusService from "../status/status.service.js";
 import { AppError } from "../../../core/utils/AppError.js";
+import ProdutoService from "../../cadastro/produto/produto.service.js";
 
 const ComprasService = {
-    async create(compra, usuario) {
+   async create(compra, usuario) {
         const existingCompra = await ComprasRepository.getByNumero(compra.numero);
 
         if (existingCompra) {
@@ -16,27 +17,44 @@ const ComprasService = {
             });
         }
 
-        await statusService.getById(compra.status_compra_id);
+        await ProdutoService.getById(compra.produto_id)
         await FornecedorService.getById(compra.fornecedor_id);
 
-        const result = await ComprasRepository.create({
-            ...compra, 
-            usuario_id: usuario.sub, 
-            empresa_id: usuario.empresa
-        });
+        const status = await statusService.getByCodigo("PEN");
+
+        if (!status) {
+            throw new AppError({
+                message: "Status Pendente não encontrado",
+                reason: "STATUS_PENDENTE_NOT_FOUND",
+                statusCode: 500,
+            });
+        }
+
+        const dadosCompra = {
+            ...compra,
+            usuario_id: usuario.sub,
+            empresa_id: usuario.empresa,
+            status_compra_id: status.id,
+        };
+
+        const result = await ComprasRepository.create(dadosCompra);
 
         await HistoricoRepository.create({
             compra_id: result.insertId,
             usuario_id: usuario.sub,
-            status_compra_id: compra.status_compra_id,
-            observacao: "Compra criada"
+            status_compra_id: status.id,
+            observacao: "Compra criada",
         });
 
         return result;
     },
 
+    async getAll() {
+        return ComprasRepository.getAll()
+    },
+
     async getAllByEmpresa(usuario) {
-        return await ComprasRepository.getAllByEmpresa(usuario.empresa);
+        return ComprasRepository.getAllByEmpresa(usuario.empresa);
     },
 
     async getById(id, usuario) {

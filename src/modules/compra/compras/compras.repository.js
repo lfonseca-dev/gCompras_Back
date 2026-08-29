@@ -2,9 +2,14 @@ import pool from "../../../core/database/data.js";
 
 const ComprasRepository = {
     async create(compra) {
-        const [result] = await pool.execute("INSERT INTO compra (numero, descricao, data, valor, observacao, fornecedor_id, usuario_id, empresa_id, status_compra_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            [compra.numero, compra.descricao, compra.data, compra.valor, compra.observacao, compra.fornecedor_id, compra.usuario_id, compra.empresa_id, compra.status_compra_id]);
+        const [result] = await pool.execute("INSERT INTO compra (numero, produto_id, data, valor, observacao, fornecedor_id, usuario_id, empresa_id, status_compra_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [compra.numero, compra.produto_id, compra.data, compra.valor, compra.observacao, compra.fornecedor_id, compra.usuario_id, compra.empresa_id, compra.status_compra_id]);
         return result;
+    },
+    
+    async getAll() {
+        const [rows] = await pool.query("SELECT * FROM compra WHERE deleted_at IS NULL");
+        return rows;
     },
 
     async getAllByEmpresa(empresa_id) {
@@ -29,8 +34,8 @@ const ComprasRepository = {
     },
 
     async update(id, compra) {
-        const [result] = await pool.execute("UPDATE compra SET numero = ?, descricao = ?, data = ?, valor = ?, observacao = ?, fornecedor_id = ?, updated_at = NOW() WHERE id = ?",
-            [compra.numero, compra.descricao, compra.data, compra.valor, compra.observacao, compra.fornecedor_id, id]);
+        const [result] = await pool.execute("UPDATE compra SET numero = ?, produto_id = ?, data = ?, valor = ?, observacao = ?, fornecedor_id = ?, updated_at = NOW() WHERE id = ?",
+            [compra.numero, compra.produto_id, compra.data, compra.valor, compra.observacao, compra.fornecedor_id, id]);
         return result;
     },
 

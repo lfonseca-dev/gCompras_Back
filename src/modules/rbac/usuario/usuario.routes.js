@@ -22,6 +22,7 @@ router.get("/",
 
 router.get("/:id",
     auth,
+    authorize(1),
     validate(getUsuarioDTO, "params"),
     UsuarioController.getById
 );

@@ -16,8 +16,8 @@ const StatusRepository = {
         return rows[0];
     },
 
-    async getByCodigo(status) {
-        const [rows] = await pool.query("SELECT * FROM status_compra WHERE codigo = ? AND deleted_at IS NULL", [status.codigo]);
+    async getByCodigo(codigo) {
+        const [rows] = await pool.query("SELECT * FROM status_compra WHERE codigo = ? AND deleted_at IS NULL", [codigo]);
         return rows[0];
     },
 
