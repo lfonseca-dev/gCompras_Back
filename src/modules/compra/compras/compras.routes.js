@@ -15,6 +15,12 @@ router.post("/",
 
 router.get("/",
     auth,
+    authorize(1),
+    ComprasController.getAll
+);
+
+router.get("/empresa",
+    auth,
     ComprasController.getAllByEmpresa
 );
 

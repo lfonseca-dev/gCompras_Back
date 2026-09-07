@@ -11,6 +11,14 @@ const ComprasController = {
         });
     }),
 
+    getAll: asyncHandler(async (req, res) => {
+        const data = await ComprasService.getAll();
+        return response.success(res, {
+            message: "Compras listadas com sucesso",
+            data,
+        });
+    }),
+
     getAllByEmpresa: asyncHandler(async (req, res) => {
         const data = await ComprasService.getAllByEmpresa(req.user);
         return response.success(res, {
