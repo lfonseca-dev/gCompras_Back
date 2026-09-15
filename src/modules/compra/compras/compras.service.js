@@ -84,14 +84,6 @@ const ComprasService = {
             });
         }
 
-        if (existingCompra.empresa_id !== usuario.empresa) {
-            throw new AppError({
-                message: "A compra não pertence à empresa do usuário",
-                reason: "COMPRA_NOT_BELONG_TO_USER_COMPANY",
-                statusCode: 403,
-            });
-        }
-
         const result = await ComprasRepository.updateStatus(id, status_compra_id);
 
         await HistoricoRepository.create({
@@ -115,13 +107,6 @@ const ComprasService = {
             });
         }
 
-        if (existingCompra.empresa_id !== usuario.empresa) {
-            throw new AppError({
-                message: "A compra não pertence à empresa do usuário",
-                reason: "COMPRA_NOT_BELONG_TO_USER_COMPANY",
-                statusCode: 403,
-            });
-        }
 
         const valorTotal = (compra.quantidade * compra.valor_unidade);
 
@@ -150,14 +135,6 @@ const ComprasService = {
                 message: "Compra não encontrada",
                 reason: "COMPRA_NOT_FOUND",
                 statusCode: 404,
-            });
-        }
-
-        if (existingCompra.empresa_id !== usuario.empresa) {
-            throw new AppError({
-                message: "A compra não pertence à empresa do usuário",
-                reason: "COMPRA_NOT_BELONG_TO_USER_COMPANY",
-                statusCode: 403,
             });
         }
 

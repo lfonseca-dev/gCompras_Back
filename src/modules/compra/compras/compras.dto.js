@@ -31,6 +31,11 @@ export const createCompraDTO = z.object({
         .number({required_error: "ID do Fornecedor é obrigatório"})
         .int("ID do Fornecedor deve ser um número inteiro")
         .positive("ID do Fornecedor deve ser maior que zero"),
+
+    forma_pagamento_id: z
+        .number({required_error: "ID da Forma de Pagamento é obrigatório"})
+        .int("ID da Forma de Pagamento deve ser um número inteiro")
+        .positive("ID da Forma de Pagamento deve ser maior que zero")
 });
 
 export const updateCompraDTO = createCompraDTO.partial();
